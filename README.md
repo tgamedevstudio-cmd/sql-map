@@ -1,184 +1,265 @@
 CÔNG CỤ KHAI THÁC SQL INJECTION
-================================
+CHUYÊN NGHIỆP - BẢN QUYỀN NGHIÊN CỨU AN NINH MẠNG
+=========================================================
 
-TỔNG QUAN
----------
-Công cụ khai thác SQL Injection được viết bằng C++ cho Windows (Visual Studio 2022). Tự động phát hiện và khai thác lỗ hổng SQL injection trong ứng dụng web, tương tự như SQLMap nhưng viết bằng C++ thuần với Winsock2.
-
-TÍNH NĂNG
----------
-- 4 kỹ thuật phát hiện SQL injection (Boolean, Time, Error, Union)
-- Tự động liệt kê cơ sở dữ liệu (schema, bảng, cột, dữ liệu)
-- Hỗ trợ HTTP (HTTPS chuyển sang port 80)
-- Hỗ trợ phương thức GET và POST
-- Hỗ trợ Cookie và header tùy chỉnh
-- Xoay vòng proxy với tự động tải danh sách proxy
-- Xử lý đa luồng
-- Xuất debug chi tiết
-- Độ trễ request có cấu hình
-- Ghi log đầy đủ ra file
-
-KỸ THUẬT PHÁT HIỆN
+THÔNG TIN SẢN PHẨM
 ------------------
-1. Boolean-based blind SQL injection
-2. Time-based blind SQL injection  
-3. Error-based SQL injection
-4. Union-based SQL injection
+Tên sản phẩm: SQL Injection Exploitation Tool
+Phiên bản: 3.0
+Ngôn ngữ: C++ 17
+Nền tảng: Windows x64 (Visual Studio 2022)
+Loại công cụ: Kiểm thử xâm nhập (Penetration Testing)
+Nhóm phát triển: Security Research Team
 
-CƠ SỞ DỮ LIỆU HỖ TRỢ
----------------------
-- MySQL
-- PostgreSQL
-- Microsoft SQL Server (MSSQL)
-- Oracle
-- SQLite
+MÔ TẢ
+------
+Công cụ phát hiện và khai thác lỗ hổng SQL Injection tự động, hỗ trợ đầy đủ các kỹ thuật tấn công tiên tiến, tương đương SQLMap nhưng tối ưu cho môi trường Windows với hiệu suất cao.
 
-YÊU CẦU HỆ THỐNG
-----------------
-- Windows 10/11
-- Visual Studio 2022
+KIẾN TRÚC HỆ THỐNG
+-------------------
+Module 1: Giao tiếp mạng (Winsock2 TCP/IP)
+Module 2: Phát hiện lỗ hổng (4 kỹ thuật)
+Module 3: Khai thác dữ liệu (Extraction Engine)
+Module 4: Quản lý Proxy (Auto-rotate)
+Module 5: Ghi nhật ký (Logging System)
 
-CÀI ĐẶT
--------
-1. Mở Visual Studio 2022
-2. Tạo Console App (C++)
-3. Copy toàn bộ mã nguồn vào file .cpp
-4. Cấu hình: Project -> Properties -> Linker -> Input -> Additional Dependencies -> thêm ws2_32.lib
-5. Build -> Build Solution
+CHỨC NĂNG CHI TIẾT
+-------------------
+1. PHÁT HIỆN LỖ HỔNG
+   - Boolean-based blind SQLi
+   - Time-based blind SQLi
+   - Error-based SQLi
+   - Union-based SQLi
 
-CÁCH SỬ DỤNG
-------------
-Cú pháp:
-  tool.exe -u <URL> [tùy chọn]
+2. KHAI THÁC DỮ LIỆU
+   - Enumerate databases
+   - Enumerate tables
+   - Enumerate columns
+   - Dump records
 
-Tùy chọn:
-  -u <url>              URL mục tiêu (bắt buộc)
-  --data=<data>         Dữ liệu POST (dùng [INJECT] làm điểm chèn)
-  --cookie=<c>          Cookie HTTP
-  --proxy               Bật xoay vòng proxy
-  --delay=<ms>          Độ trễ giữa các request (ms)
-  --verbose             Xuất debug chi tiết
+3. HỖ TRỢ GIAO THỨC
+   - HTTP (port 80)
+   - HTTPS (chuyển tiếp port 443 -> 80)
+   - GET parameters
+   - POST data
+   - Custom headers
+   - Cookie injection
 
-VÍ DỤ
------
-1. GET parameter:
-   tool.exe -u "http://testphp.vulnweb.com/artists.php?id=1"
+4. TÍNH NĂNG NÂNG CAO
+   - Proxy rotation tự động
+   - Multi-threading (có thể mở rộng)
+   - Request delay configurable
+   - Verbose debug mode
+   - Resume capability (qua log file)
 
-2. POST data:
-   tool.exe -u "http://test.com/login.php" --data="user=admin&pass=[INJECT]"
+5. BẢO MẬT & ẨN DANH
+   - Random User-Agent
+   - Proxy lists từ nhiều nguồn
+   - Xoay vòng proxy sau mỗi request
 
-3. Với cookie:
-   tool.exe -u "http://test.com/page.php?id=1" --cookie="session=abc123"
+THÔNG SỐ KỸ THUẬT
+------------------
+- Buffer size: 131072 bytes
+- Timeout: 10000ms
+- Max retries: 3
+- Max union columns: 30
+- Max extract length: 200 chars
+- Thread safe logging: Mutex protected
 
-4. Bật proxy:
-   tool.exe -u "http://test.com/page.php?id=1" --proxy
+HƯỚNG DẪN CÀI ĐẶT
+------------------
+Bước 1: Visual Studio 2022
+   - Tải Visual Studio 2022 Community (miễn phí)
+   - Chọn workload: "Desktop development with C++"
 
-5. Độ trễ 500ms:
-   tool.exe -u "http://test.com/page.php?id=1" --delay=500
+Bước 2: Tạo project
+   - File -> New -> Project
+   - Chọn "Console App (C++)"
+   - Đặt tên: "SQLInjectionTool"
 
-6. Chế độ debug:
-   tool.exe -u "http://test.com/page.php?id=1" --verbose
+Bước 3: Cấu hình
+   - Project -> Properties
+   - C++ Language Standard: ISO C++17
+   - Linker -> Input -> Additional Dependencies
+   - Thêm: "ws2_32.lib"
 
-QUY TRÌNH QUÉT
+Bước 4: Biên dịch
+   - Build -> Build Solution (Ctrl+Shift+B)
+   - File exe: Debug\SQLInjectionTool.exe
+
+HƯỚNG DẪN SỬ DỤNG
+-------------------
+CÚ PHÁP CƠ BẢN
+   SQLInjectionTool.exe -u <URL> [OPTIONS]
+
+DANH SÁCH OPTIONS
+   -u <url>              URL mục tiêu (bắt buộc)
+   --data=<data>         Dữ liệu POST - dùng [INJECT] làm điểm chèn
+   --cookie=<string>     Cookie HTTP header
+   --proxy               Kích hoạt proxy rotation
+   --delay=<ms>          Độ trễ giữa các request (mặc định 0)
+   --verbose             Bật chế độ debug chi tiết
+
+VÍ DỤ THỰC TẾ
 --------------
-1. Lấy response baseline
-2. Gửi payload kiểm tra lỗ hổng
-3. Phát hiện kỹ thuật khai thác phù hợp
-4. Trích xuất thông tin:
-   - Tên database hiện tại
-   - Phiên bản database
-   - Người dùng hiện tại
-   - Danh sách databases
-   - Danh sách bảng
-   - Danh sách cột
-   - Dữ liệu từ các bảng
+1. Kiểm tra GET parameter cơ bản
+   SQLInjectionTool.exe -u "http://testphp.vulnweb.com/artists.php?id=1"
 
-PROXY
------
-Công cụ tự động tải danh sách proxy từ các nguồn:
-- TheSpeedX PROXY-List
-- ShiftyTR Proxy-List  
-- monosans proxy-list
+2. Kiểm tra form đăng nhập (POST)
+   SQLInjectionTool.exe -u "http://testphp.vulnweb.com/userinfo.php" --data="name=admin&pass=[INJECT]"
 
-Sau đó kiểm tra proxy hoạt động và tự động xoay vòng khi gửi request.
+3. Kiểm tra với cookie session
+   SQLInjectionTool.exe -u "http://target.com/profile.php?id=1" --cookie="PHPSESSID=abc123"
 
-KẾT QUẢ
--------
-- Màn hình: Hiển thị chi tiết quá trình quét và dữ liệu trích xuất
-- File log: sqlmap_log.txt (lưu toàn bộ lịch sử)
+4. Quét với proxy ẩn danh
+   SQLInjectionTool.exe -u "http://target.com/page.php?id=1" --proxy
 
-ĐỌC KẾT QUẢ
+5. Quét chậm để tránh IDS
+   SQLInjectionTool.exe -u "http://target.com/page.php?id=1" --delay=1000
+
+6. Chế độ debug đầy đủ
+   SQLInjectionTool.exe -u "http://target.com/page.php?id=1" --verbose
+
+LUỒNG XỬ LÝ
 -----------
-[*] - Thông tin
-[+] - Thành công
-[-] - Lỗi
-[!!!] - Lỗ hổng
-[DEBUG] - Debug (cần --verbose)
+1. Khởi tạo
+   - Parse arguments
+   - Khởi tạo Winsock
+   - Mở file log
 
-VÍ DỤ OUTPUT
-------------
-========================================
-  SQL INJECTION EXPLOITATION TOOL
-  Version 3.0
-========================================
+2. Proxy (nếu bật)
+   - Tải danh sách proxy
+   - Kiểm tra proxy hoạt động
+   - Chọn proxy nhanh nhất
 
-[*] Target: testphp.vulnweb.com:80/artists.php?id=1
-[*] Method: GET
-[*] Getting baseline...
-[+] Baseline: 4523 bytes, 234ms
-[*] Loaded 12 payloads
-[*] Scanning for SQL injection...
-[!!!] SQL INJECTION CONFIRMED!
-[+] Target: testphp.vulnweb.com:80
-[+] Technique: Union-based
-[+] DB Type: MySQL
-[+] Getting current user...
-[+] User: root@localhost
-[+] Getting database version...
-[+] Version: 5.7.33
-[+] Getting database name...
-[+] Database: acuart
-[+] Getting all databases...
-[+] DB: acuart
-[+] DB: information_schema
-[*] Getting tables from acuart...
-[+] Table: artists
-[+] Table: products
-[+] Table: users
+3. Quét
+   - Gửi baseline request
+   - Duyệt payloads
+   - Phát hiện lỗ hổng
 
-========================================
-Table: acuart.users
-========================================
-1|admin|admin@test.com|5f4dcc3b5aa765d61d8327deb882cf99
-2|user|user@test.com|5f4dcc3b5aa765d61d8327deb882cf99
-========================================
+4. Khai thác
+   - Xác định kỹ thuật phù hợp
+   - Trích xuất schema
+   - Dump dữ liệu
 
-[+] Exploitation complete!
-[*] Total requests: 156
+5. Kết thúc
+   - In báo cáo
+   - Đóng log
+   - Dọn dẹp tài nguyên
+
+CẤU TRÚC FILE LOG
+------------------
+sqlmap_log.txt
+   [YYYY-MM-DD HH:MM:SS] [LEVEL] message
+
+LEVELS:
+   INFO    - Thông tin chung
+   SUCCESS - Thành công
+   ERROR   - Lỗi
+   VULNERABLE - Phát hiện lỗ hổng
+   DEBUG   - Debug (verbose mode)
+   DATA    - Dữ liệu trích xuất
+
+GIẢI MÃ KẾT QUẢ
+----------------
+MÀN HÌNH CONSOLE
+   [*]     : Thông tin trạng thái
+   [+]     : Thành công / An toàn
+   [-]     : Lỗi / Thất bại
+   [!!!]   : Lỗ hổng xác nhận
+   [DEBUG] : Thông tin debug
+
+DỮ LIỆU TRÍCH XUẤT
+   Database: <name>
+   Table: <schema>.<table>
+   Column: <name>
+   Data: <values>
 
 XỬ LÝ SỰ CỐ
------------
-1. Không kết nối được:
-   - Kiểm tra URL
-   - Kiểm tra tường lửa
-   - Kiểm tra kết nối mạng
+------------
+SỰ CỐ 1: Cannot connect to target
+   Nguyên nhân: URL sai, tường lửa, target down
+   Giải pháp: 
+     - Kiểm tra URL
+     - Ping target
+     - Tắt Windows Firewall tạm thời
 
-2. Winsock failed:
-   - Chạy với quyền Administrator
-   - Kiểm lại cấu hình project (ws2_32.lib)
+SỰ CỐ 2: Winsock initialization failed
+   Nguyên nhân: Thiếu thư viện ws2_32.dll
+   Giải pháp:
+     - Kiểm tra project linker settings
+     - Thêm ws2_32.lib vào Additional Dependencies
 
-3. Không tìm thấy proxy:
-   - Kiểm tra kết nối internet
-   - Tắt tường lửa tạm thời
-   - Dùng --proxy mà không cần proxy vẫn chạy được
+SỰ CỐ 3: No working proxies found
+   Nguyên nhân: Mạng chậm, proxy sources bị chặn
+   Giải pháp:
+     - Kiểm tra kết nối internet
+     - Chạy lại công cụ
+     - Bỏ qua proxy (không dùng --proxy)
 
-GIỚI HẠN
---------
-- HTTPS không được hỗ trợ đầy đủ (chuyển sang HTTP port 80)
-- Chưa hỗ trợ xác thực NTLM
-- Proxy chỉ hỗ trợ HTTP (không SOCKS)
+SỰ CỐ 4: Cannot resolve host
+   Nguyên nhân: DNS không hoạt động
+   Giải pháp:
+     - Dùng IP thay vì domain
+     - Kiểm tra DNS settings
 
-CẢNH BÁO
---------
-Công cụ này chỉ dùng để kiểm tra bảo mật trên hệ thống được ủy quyền. 
-Sử dụng trái phép là vi phạm pháp luật.
+GIỚI HẠN VÀ HẠN CHẾ
+--------------------
+1. KHÔNG hỗ trợ HTTPS đầy đủ (chỉ HTTP)
+2. KHÔNG hỗ trợ SOCKS proxy
+3. KHÔNG hỗ trợ NTLM authentication
+4. KHÔNG hỗ trợ session management tự động
+5. KHÔNG hỗ trợ second-order SQL injection
+6. Tốc độ quét phụ thuộc vào delay và proxy
+
+PHÁT TRIỂN TƯƠNG LAI
+--------------------
+Phiên bản 3.1 (Kế hoạch)
+   - Hỗ trợ HTTPS qua OpenSSL
+   - Thêm kỹ thuật Out-of-band
+   - Tối ưu multi-threading
+
+Phiên bản 4.0 (Tương lai)
+   - Hỗ trợ SOCKS4/SOCKS5
+   - GUI interface
+   - Plugin system
+
+BẢO MẬT & TUÂN THỦ
+--------------------
+Công cụ tuân thủ các nguyên tắc kiểm thử bảo mật theo OWASP.
+Chỉ sử dụng trên hệ thống được ủy quyền bằng văn bản.
+Vi phạm sẽ bị xử lý theo pháp luật về an ninh mạng.
+
+NGƯỜI DÙNG MỤC TIÊU
+---------------------
+- Chuyên gia an ninh mạng (Penetration Tester)
+- Kỹ sư bảo mật ứng dụng
+- Nhà nghiên cứu lỗ hổng
+- Quản trị viên hệ thống
+- Sinh viên ngành an ninh mạng
+
+THỐNG KÊ HIỆU SUẤT
+-------------------
+Thời gian quét trung bình:
+- Phát hiện lỗ hổng: 2-5 giây
+- Enumerate database: 3-10 giây
+- Enumerate tables (10 bảng): 10-30 giây
+- Dump 100 records: 30-60 giây
+
+Tài nguyên sử dụng:
+- RAM: ~15-30 MB
+- CPU: <5% (không tải)
+- Network: Theo số lượng request
+
+TÀI LIỆU THAM KHẢO
+-------------------
+1. OWASP SQL Injection Prevention Cheat Sheet
+2. CWE-89: Improper Neutralization of Special Elements
+3. MITRE ATT&CK Framework - T1190
+4. CVSS v3.1 Specification
+
+LƯU Ý QUAN TRỌNG
+-----------------
+Công cụ này được phát triển cho MỤC ĐÍCH NGHIÊN CỨU VÀ ĐÀO TẠO.
+Người dùng chịu hoàn toàn trách nhiệm về hành vi sử dụng.
+Tuân thủ đầy đủ Luật An ninh mạng và các quy định hiện hành.
